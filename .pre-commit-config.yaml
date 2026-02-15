@@ -29,6 +29,7 @@ repos:
           - --args=--severity=CRITICAL,HIGH,MEDIUM
           - --args=--exit-code=0  # Don't block commits (learning phase)
           - --args=--skip-dirs="**/.terraform"
+          - --hook-config=--verbose=true
 
   # Terragrunt hooks (separate repo!)
   - repo: https://github.com/gruntwork-io/pre-commit
