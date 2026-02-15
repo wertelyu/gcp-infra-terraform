@@ -25,6 +25,7 @@ repos:
       - id: terraform_trivy
         args:
           - --args=--config=__GIT_WORKING_DIR__/.trivy.yaml
+          - --args=--ignorefile=__GIT_WORKING_DIR__/.trivyignore.yaml
           - --args=--severity=CRITICAL,HIGH,MEDIUM
           # - --args=--exit-code=0  # Don't block commits (learning phase)
 

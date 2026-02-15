@@ -1,0 +1,10 @@
+misconfigurations:
+  - id: GCP-0048
+  - id: GCP-0049
+  - id: GCP-0050
+  - id: GCP-0051
+  - id: GCP-0052
+  - id: GCP-0053
+  - id: GCP-0073
+  - id: GCP-0071
+  - id: GCP-0027

@@ -3,44 +3,36 @@
 # Scan configuration
 scan:
   security-checks:
-    - config  # IaC scanning
+    - misconfig  # IaC scanning
     - secret  # Secret detection
+    - vuln  # Vulnerability detection
+  skip-dirs:
+    - .terraform/
+    - .terragrunt-cache/
+    - .git/
+
+misconfiguration:
+
+  # Same as '--include-non-failures'
+  include-non-failures: false
+
+  # Same as '--misconfig-scanners'
+  scanners:
+   - dockerfile
+   - helm
+   - kubernetes
+   - terraform
+
+  terraform:
+    exclude-downloaded-modules: false
 
 # Severity levels to report
 severity:
   - CRITICAL
   - HIGH
   - MEDIUM
-  - LOW
 
-# Skip specific checks (for intentionally insecure learning setup)
-skip-checks:
-  # GKE intentionally insecure for learning
-  - AVD-GCP-0048  # Workload Identity not enabled
-  - AVD-GCP-0053  # GKE private cluster not enabled
-  - AVD-GCP-0056  # GKE master authorized networks
-  - AVD-GCP-0063  # GKE legacy metadata not disabled
-
-  # Network intentionally open for testing
-  - AVD-GCP-0031  # SSH from internet
-  - AVD-GCP-0030  # Ingress from internet
-  - AVD-GCP-0027  # Oppening ports to allow from the public
-  - AVD-GCP-0071  # SSH access to specific ports
-  - AVD-GCP-0073  # firewall
-
-  # Learning path
-  - AVD-GCP-0048  # Legacy endpoint
-  - AVD-GCP-0050  # Priveleged service account
-  - AVD-GCP-0053  # COntrol plane exposed to the public
-  - AVD-GCP-0056  # Master authorized networks
-  - AVD-GCP-0057
-  - AVD-GCP-0059
-
-# Ignore paths
-ignorePaths:
-  - .terraform/
-  - .terragrunt-cache/
-  - .git/
+ignorefile: ".trivyignore"
 
 # Output format
 format: table
