@@ -19,3 +19,9 @@ terraform-sa-key.json
 
 # Documentation (auto-generated)
 modules/**/README.md
+
+# Trivy
+.trivy/
+
+# Reports
+reports/
