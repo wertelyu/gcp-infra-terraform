@@ -1,9 +1,9 @@
 # Security Notes (we'll fix in Phase 5):
 
-✅ `VPC Flow Logs` enabled (good for auditing)
-❌ `SSH` open to 0.0.0.0/0 (will restrict to IAP later)
-❌ `No Cloud NAT` (needed for private clusters)
-❌ `No Private Google Access` (needed for GKE without external IPs)
+`VPC Flow Logs` enabled (good for auditing)
+`SSH` open to 0.0.0.0/0 (will restrict to IAP later)
+`No Cloud NAT` (needed for private clusters)
+`No Private Google Access` (needed for GKE without external IPs)
 
 
 <!-- BEGIN_TF_DOCS -->

@@ -16,6 +16,10 @@ locals {
 
   # State bucket
   state_bucket = "tfstate-gcp-sec-lab-gke"
+
+  # Toggle impersonation
+  use_impersonation = get_env("TG_USE_ADC", "false") != "true"
+  terraform_sa      = "terraform-sa@gcp-sec-lab-gke.iam.gserviceaccount.com"
 }
 
 # Generate provider.tf (without required_providers - let modules handle it)
@@ -25,6 +29,9 @@ generate "provider" {
   contents  = <<EOF
 provider "google" {
   region = "${local.region}"
+  %{if local.use_impersonation~}
+  impersonate_service_account = "${local.terraform_sa}"
+  %{endif~}
 }
 EOF
 }
