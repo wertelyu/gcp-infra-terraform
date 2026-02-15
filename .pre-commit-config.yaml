@@ -1,0 +1,44 @@
+# Pre-commit hooks for Terraform/Terragrunt
+repos:
+  # Terraform formatting and validation
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.94.3
+    hooks:
+      # Format Terraform files (enforces 2-space indentation)
+      - id: terraform_fmt
+        args:
+          - --args=-recursive
+
+      # Run tflint
+      - id: terraform_tflint
+        args:
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
+          - --hook-config=--delegate-chdir
+
+      # Generate documentation
+      - id: terraform_docs
+        args:
+          - --hook-config=--path-to-file=README.md
+          - --hook-config=--add-to-existing-file=true
+          - --hook-config=--create-file-if-not-exist=true
+
+      # Security scanning
+      - id: terraform_tfsec
+        args:
+          - --args=--soft-fail
+
+  # NOTE: Terragrunt fmt hook removed - run manually with 'terragrunt hclfmt'
+  # New terragrunt CLI doesn't support old hook format
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+        exclude: '.terragrunt-cache/|.terraform/'
+      - id: check-merge-conflict
+      - id: detect-private-key

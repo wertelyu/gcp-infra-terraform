@@ -1,0 +1,21 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.auto.tfvars
+
+# Terragrunt
+.terragrunt-cache/
+
+# Sensitive
+*.json
+!modules/**/*.json
+terraform-sa-key.json
+
+# macOS
+.DS_Store
+
+# Documentation (auto-generated)
+modules/**/README.md
