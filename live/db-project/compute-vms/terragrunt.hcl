@@ -6,7 +6,10 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
-# Dependency on DB VPC (once it's created)
+locals {
+  project_vars = read_terragrunt_config(find_in_parent_folders("project.hcl"))
+}
+
 dependency "network" {
   config_path = "../network"
 
@@ -17,16 +20,27 @@ dependency "network" {
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
 }
 
-locals {
-  root = read_terragrunt_config(find_in_parent_folders("root.hcl"))
+remote_state {
+  backend = "gcs"
+  config = {
+    bucket   = local.project_vars.locals.state_bucket
+    prefix   = "${path_relative_to_include()}/terraform.tfstate"
+    project  = local.project_vars.locals.project_id
+    location = local.project_vars.locals.region
+  }
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite_terragrunt"
+  }
 }
 
 inputs = {
-  project_id    = local.root.locals.db_project_id
-  instance_name = "mongodb-vm"
-  machine_type  = "e2-medium"
+  project_id    = local.project_vars.locals.project_id
+  instance_name = "${local.project_vars.locals.name_prefix}-mongodb-vm"
+  machine_type  = local.project_vars.locals.db_machine_type
   network       = dependency.network.outputs.network_name
   subnetwork    = dependency.network.outputs.subnet_name
-  disk_size_gb  = 50
-  tags          = ["mongodb", "database"]
+  zone          = local.project_vars.locals.zone
+  disk_size_gb  = local.project_vars.locals.db_disk_size
+  tags          = ["mongodb", "database", local.project_vars.locals.environment]
 }
