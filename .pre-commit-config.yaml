@@ -27,9 +27,9 @@ repos:
         args:
           - --args=--config=__GIT_WORKING_DIR__/.trivy.yaml
           - --args=--severity=CRITICAL,HIGH,MEDIUM
-          - --args=--exit-code=0  # Don't block commits (learning phase)
+          # - --args=--exit-code=0  # Don't block commits (learning phase)
           - --args=--skip-dirs="**/.terraform"
-          - --hook-config=--verbose=true
+          - --args=--format=table
 
   # Terragrunt hooks (separate repo!)
   - repo: https://github.com/gruntwork-io/pre-commit
