@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Standalone Trivy Hook with Soft-Fail logic
 set -e
 
 # Initialize variables
 SOFT_FAIL=false
 TRIVY_ARGS=()
 
-# Separate --soft-fail from actual Trivy arguments
+# 1. Parse Arguments
 for arg in "$@"; do
   # Remove the --args= prefix if passed from pre-commit
-  CLEAN_ARG=$(echo "$arg" | sed 's/^--args=//')
+  # Also replace the antonbabenko placeholder with "." for local execution
+  CLEAN_ARG=$(echo "$arg" | sed 's/^--args=//' | sed 's|__GIT_WORKING_DIR__|.|g')
 
   if [[ "$CLEAN_ARG" == "--soft-fail" ]]; then
     SOFT_FAIL=true
@@ -18,25 +18,26 @@ for arg in "$@"; do
   fi
 done
 
-# Find directories containing .tf files (excluding .terraform folders)
+# 2. Identify Terraform Directories
+# Finds dirs with .tf files, excluding hidden .terraform folders
 TARGET_DIRS=$(find . -maxdepth 3 -name "*.tf" -not -path "*/.*" -exec dirname {} + | sort -u)
 
-EXIT_CODE=0
+GLOBAL_EXIT_CODE=0
 
+# 3. Execution Loop
 for dir in $TARGET_DIRS; do
-  echo "--- Scanning: $dir ---"
+  echo "--- Scanning Directory: $dir ---"
 
-  # Run Trivy. We capture the exit code manually.
-  # We use --exit-code 1 so Trivy flags issues.
+  # Execute Trivy. We use || true or capture code to prevent 'set -e' from killing the script.
   if ! trivy conf "$dir" --exit-code 1 "${TRIVY_ARGS[@]}"; then
     if [ "$SOFT_FAIL" = true ]; then
-      echo "⚠️ Issues found in $dir, but --soft-fail is active. Continuing..."
+      echo "⚠️  Trivy found issues in $dir, but --soft-fail is enabled. Continuing commit..."
     else
-      echo "❌ Issues found in $dir. Blocking commit."
-      EXIT_CODE=1
+      echo "❌ Trivy found issues in $dir. Blocking commit."
+      GLOBAL_EXIT_CODE=1
     fi
   fi
   echo ""
 done
 
-exit $EXIT_CODE
+exit $GLOBAL_EXIT_CODE
