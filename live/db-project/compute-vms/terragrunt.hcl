@@ -14,6 +14,7 @@ dependency "network" {
     network_name = "mock-network"
     subnet_name  = "mock-subnet"
   }
+  mock_outputs_allowed_terraform_commands = ["validate", "plan"]
 }
 
 locals {

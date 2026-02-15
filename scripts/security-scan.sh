@@ -3,7 +3,7 @@
 
 set -e
 
-echo "🔍 Running Trivy IaC security scan..."
+echo "Running Trivy IaC security scan..."
 echo "========================================"
 
 # Create reports directory
@@ -11,14 +11,14 @@ mkdir -p reports
 
 # Scan Terraform files with config
 echo ""
-echo "📋 Scanning Terraform configurations..."
+echo "Scanning Terraform configurations..."
 trivy config . \
   --config .trivy.yaml \
   --format table
 
 # Generate reports
 echo ""
-echo "📊 Generating reports..."
+echo "Generating reports..."
 
 # JSON report (for automation/CI)
 trivy config . \
@@ -40,8 +40,8 @@ trivy config . \
   --output reports/trivy-iac-scan.html 2>/dev/null || echo "HTML template not available"
 
 echo ""
-echo "✅ Scan complete!"
-echo "📁 Reports saved to reports/"
+echo "Scan complete!"
+echo "Reports saved to reports/"
 echo ""
 
 # Summary
