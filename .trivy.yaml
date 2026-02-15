@@ -24,6 +24,9 @@ skip-checks:
   # Network intentionally open for testing
   - AVD-GCP-0031  # SSH from internet
   - AVD-GCP-0030  # Ingress from internet
+  - AVD-GCP-0027  # Oppening ports to allow from the public
+  - AVD-GCP-0071  # SSH access to specific ports
+  - AVD-GCP-0073  # firewall
 
 # Ignore paths
 ignorePaths:
