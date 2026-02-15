@@ -16,8 +16,9 @@ resource "google_compute_instance" "vm" {
 
   # Network configuration
   network_interface {
-    network    = var.network
-    subnetwork = var.subnetwork
+    network            = var.network
+    subnetwork         = var.subnetwork
+    subnetwork_project = var.project_id
 
     # No external IP by default (add access_config block for public IP)
   }
