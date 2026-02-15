@@ -56,5 +56,3 @@ resource "google_compute_firewall" "allow_ssh" {
 
   source_ranges = ["0.0.0.0/0"] # INSECURE - allows from anywhere
 }
-
-# test trivy

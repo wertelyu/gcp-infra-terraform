@@ -18,22 +18,11 @@ locals {
   state_bucket = "tfstate-gcp-sec-lab-gke"
 }
 
-# Generate provider.tf for every child module
+# Generate provider.tf (without required_providers - let modules handle it)
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-terraform {
-  required_version = ">= 1.5.0"
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 5.0"
-    }
-  }
-}
-
 provider "google" {
   region = "${local.region}"
 }
