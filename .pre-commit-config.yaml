@@ -22,14 +22,12 @@ repos:
           - --hook-config=--add-to-existing-file=true
           - --hook-config=--create-file-if-not-exist=true
 
-      # Security scanning
       - id: terraform_trivy
         args:
-          - --args=--config=.trivy.yaml
+          - --args=--config=__GIT_WORKING_DIR__/.trivy.yaml
           - --args=--severity=CRITICAL,HIGH,MEDIUM
-          - --args=--exit-code=0  # Don't block commits (learning phase)
+          # - --args=--exit-code=0  # Don't block commits (learning phase)
 
-  # Terragrunt hooks (separate repo!)
   - repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.30
     hooks:
