@@ -22,23 +22,12 @@ repos:
           - --hook-config=--add-to-existing-file=true
           - --hook-config=--create-file-if-not-exist=true
 
-  # Custom Local Security scanning (Soft Fail Logic)
-  - repo: local
-    hooks:
       - id: terraform_trivy
-        name: Terraform Trivy (Soft Fail)
-        entry: scripts/terraform_trivy.sh
-        language: script
-        verbose: true
         args:
-          - --soft-fail
           - --args=--config=__GIT_WORKING_DIR__/.trivy.yaml
           - --args=--severity=CRITICAL,HIGH,MEDIUM
-          - --args=--skip-dirs="**/.terraform"
-          - --args=--exit-code=1
-          - --args=--format=table
+          # - --args=--exit-code=0  # Don't block commits (learning phase)
 
-  # Terragrunt hooks (separate repo!)
   - repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.30
     hooks:
