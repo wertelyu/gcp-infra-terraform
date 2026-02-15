@@ -9,16 +9,34 @@ terraform {
   source = "../../../modules/vpc"
 }
 
+# Include root for provider generation
 include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
+# Read project config
 locals {
-  root = read_terragrunt_config(find_in_parent_folders("root.hcl"))
+  project_vars = read_terragrunt_config(find_in_parent_folders("project.hcl"))
+}
+
+# Configure remote state
+remote_state {
+  backend = "gcs"
+  config = {
+    bucket   = local.project_vars.locals.state_bucket
+    prefix   = "${path_relative_to_include()}/terraform.tfstate"
+    project  = local.project_vars.locals.project_id
+    location = local.project_vars.locals.region
+  }
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite_terragrunt"
+  }
 }
 
 inputs = {
-  project_id   = local.root.locals.gke_project_id
-  network_name = "gke-vpc"
-  subnet_cidr  = "10.0.0.0/20" # 4096 IPs for GKE
+  project_id   = local.project_vars.locals.project_id
+  network_name = "${local.project_vars.locals.name_prefix}-gke-vpc"
+  subnet_cidr  = "10.0.0.0/20"
+  region       = local.project_vars.locals.region
 }
