@@ -2,3 +2,9 @@ misconfigurations:
   - id: GCP-0073
   - id: GCP-0071
   - id: GCP-0027
+  - id: GCP-0067 # Secure boot
+  - id: GCP-0045 # Integrity monitoring
+  - id: GCP-0044 # Default service account
+  - id: GCP-0041 # VTMP
+  - id: GCP-0036 # OS login disabled
+  - id: GCP-0030 # Project level ssh
