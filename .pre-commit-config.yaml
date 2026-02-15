@@ -25,9 +25,10 @@ repos:
       # Security scanning
       - id: terraform_trivy
         args:
-          - --args=--config=.trivy.yaml
+          - --args=--config=__GIT_WORKING_DIR__/.trivy.yaml
           - --args=--severity=CRITICAL,HIGH,MEDIUM
           - --args=--exit-code=0  # Don't block commits (learning phase)
+          - --args=--skip-dirs="**/.terraform"
 
   # Terragrunt hooks (separate repo!)
   - repo: https://github.com/gruntwork-io/pre-commit

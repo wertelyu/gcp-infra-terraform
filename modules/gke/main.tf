@@ -152,3 +152,6 @@ resource "google_container_node_pool" "primary_nodes" {
     max_unavailable = 0
   }
 }
+
+
+# test trivy
