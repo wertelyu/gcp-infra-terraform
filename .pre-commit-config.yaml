@@ -35,6 +35,7 @@ repos:
           - --args=--config=__GIT_WORKING_DIR__/.trivy.yaml
           - --args=--severity=CRITICAL,HIGH,MEDIUM
           - --args=--skip-dirs="**/.terraform"
+          - --args=--exit-code=1
           - --args=--format=table
 
   # Terragrunt hooks (separate repo!)
