@@ -21,11 +21,11 @@ locals {
 }
 
 inputs = {
-  project_id      = local.root.locals.db_project_id
-  instance_name   = "mongodb-vm"
-  machine_type    = "e2-medium"
-  network         = dependency.network.outputs.network_name
-  subnetwork      = dependency.network.outputs.subnet_name
-  disk_size_gb    = 50
-  tags            = ["mongodb", "database"]
+  project_id    = local.root.locals.db_project_id
+  instance_name = "mongodb-vm"
+  machine_type  = "e2-medium"
+  network       = dependency.network.outputs.network_name
+  subnetwork    = dependency.network.outputs.subnet_name
+  disk_size_gb  = 50
+  tags          = ["mongodb", "database"]
 }

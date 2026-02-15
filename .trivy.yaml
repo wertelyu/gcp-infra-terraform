@@ -1,0 +1,35 @@
+# Trivy configuration for IaC scanning
+
+# Scan configuration
+scan:
+  security-checks:
+    - config  # IaC scanning
+    - secret  # Secret detection
+
+# Severity levels to report
+severity:
+  - CRITICAL
+  - HIGH
+  - MEDIUM
+  - LOW
+
+# Skip specific checks (for intentionally insecure learning setup)
+skip-checks:
+  # GKE intentionally insecure for learning
+  - AVD-GCP-0048  # Workload Identity not enabled
+  - AVD-GCP-0053  # GKE private cluster not enabled
+  - AVD-GCP-0056  # GKE master authorized networks
+  - AVD-GCP-0063  # GKE legacy metadata not disabled
+
+  # Network intentionally open for testing
+  - AVD-GCP-0031  # SSH from internet
+  - AVD-GCP-0030  # Ingress from internet
+
+# Ignore paths
+ignorePaths:
+  - .terraform/
+  - .terragrunt-cache/
+  - .git/
+
+# Output format
+format: table
