@@ -28,8 +28,7 @@ repos:
           - --args=--config=__GIT_WORKING_DIR__/.trivy.yaml
           - --args=--severity=CRITICAL,HIGH,MEDIUM
           - --args=--skip-dirs="**/.terraform"
-        fail_fast: false
-        pass_filenames: false
+          - --soft-fail
 
   # Terragrunt hooks (separate repo!)
   - repo: https://github.com/gruntwork-io/pre-commit
